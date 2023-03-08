@@ -1,4 +1,7 @@
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:olz/screens/Login.dart';
 
 mixin CacheManager {
   Future<bool?> saveToken(String token) async {
@@ -16,6 +19,9 @@ String? getToken() {
 Future<void> removeToken() async {
   final box = GetStorage();
   await box.remove(CacheManagerKey.TOKEN.toString());
+  Get.off(const Login());
 }
 
 enum CacheManagerKey { TOKEN }
+
+//UIG962450

@@ -28,14 +28,6 @@ class _LoginState extends State<Login> {
   checkLogin(BuildContext context) async {
     print(_formKey.currentState!.validate());
     if (_formKey.currentState!.validate()) {
-      // setState(() {
-      //   // changeButton = true;
-      // });
-      // await Future.delayed(const Duration(seconds: 1));
-      // await Navigator.pushNamed(context, MyRoutes.homeRoute);
-      // setState(() {
-      //   changeButton = false;
-      // });
       loginController.login();
     }
   }
@@ -69,7 +61,6 @@ class _LoginState extends State<Login> {
                       style: TextStyle(
                           fontFamily: GoogleFonts.lato().fontFamily,
                           fontSize: 20,
-                          // color: Color(0xFF16C3C9),
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
                     ),
@@ -84,18 +75,16 @@ class _LoginState extends State<Login> {
                   placeholder: 'Username',
                   textEditingController: loginController.emailController,
                   prefixIcon: const Icon(Icons.email),
-                  validator: (value) {
-                    // loginController.validateEmail(value);
-                    if (value!.isEmpty) {
-                      return 'UID is required';
-                    } else {
-                      return null;
-                    }
-                  },
+                  hitnText: 'UID is required',
+                  // validator: (value) {
+                  //   // loginController.validateEmail(value);
+                  //   if (value!.isEmpty) {
+                  //     return 'UID is required';
+                  //   } else {
+                  //     return null;
+                  //   }
+                  // },
                   onChanged: (data) {
-                    // print(StackTrace.current.toString());
-                    // debugPrintStack(label: 'Login Data', maxFrames: 2);
-                    // print(data);
                     username = data;
                     setState(() {});
                   },
@@ -111,14 +100,15 @@ class _LoginState extends State<Login> {
                   obsecureText: true,
                   showPasswordEye: true,
                   prefixIcon: const Icon(Icons.lock),
-                  validator: (value) {
-                    // loginController.validatePassword(value);
-                    if (value!.isEmpty) {
-                      return 'Password is required';
-                    } else {
-                      return null;
-                    }
-                  },
+                  hitnText: 'Password is required',
+                  // validator: (value) {
+                  //   // loginController.validatePassword(value);
+                  //   if (value!.isEmpty) {
+                  //     return 'Password is required';
+                  //   } else {
+                  //     return null;
+                  //   }
+                  // },
                   onChanged: (data) {
                     print(data);
                     password = data;

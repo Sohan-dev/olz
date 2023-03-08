@@ -1,5 +1,5 @@
 class ApiEndpoints {
-  static final String base_url = 'https://uigdevelopment.sdinfoweb.com/api/';
+  static const String base_url = 'https://client.uig.llc/api/';
   static _AuthEndpoints authEndpoints = _AuthEndpoints();
 }
 

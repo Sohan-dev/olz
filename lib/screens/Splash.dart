@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:olz/authManager/auth_verify.dart';
 import 'package:olz/authManager/authentication_manager.dart';
+import 'package:olz/screens/Home.dart';
+import 'package:olz/screens/Login.dart';
 
 class Splash extends StatelessWidget {
   Splash({super.key});
@@ -25,10 +27,15 @@ class Splash extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return waitingView();
         } else {
-          if (snapshot.hasError)
+          if (snapshot.hasError) {
             return errorView(snapshot);
-          else
-            return const OnBoard();
+          } else {
+            return Obx(() {
+              return _authManager.isLoggedIn.value
+                  ? const Home()
+                  : const Login();
+            });
+          }
         }
       },
     );

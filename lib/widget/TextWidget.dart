@@ -1,6 +1,4 @@
 import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TextWidget extends StatelessWidget {
@@ -9,14 +7,14 @@ class TextWidget extends StatelessWidget {
   final MaterialColor color, borderColor;
   final String placeholder;
   final String? label;
+  final String? hitnText;
   final double radius;
   final bool obsecureText;
   final bool showPasswordEye;
   final Function onSaved;
-  final Function validator;
+  final void validator;
   final Function onChanged;
   Icon? prefixIcon;
-  // bool _validate ;
 
   TextWidget(
       {Key? key,
@@ -27,12 +25,13 @@ class TextWidget extends StatelessWidget {
       this.obsecureText = false,
       this.showPasswordEye = false,
       this.prefixIcon,
+      this.hitnText,
       required this.color,
       required this.borderColor,
       required this.placeholder,
       required this.textEditingController,
       required this.onSaved,
-      required this.validator,
+      this.validator,
       required this.onChanged,
       this.label});
 
@@ -48,25 +47,18 @@ class TextWidget extends StatelessWidget {
         onSaved: (data) => {onSaved(data)},
         validator: (value) {
           if (value!.isEmpty) {
-            return 'UID is required';
+            return hitnText;
           }
           return null;
-
-          // return validator(value);
         },
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          // labelText: label,
-          // errorText:  ,
-
           hintText: placeholder,
           prefixIcon: prefixIcon ?? null,
-
           suffixIcon:
               showPasswordEye == true ? const Icon(Icons.remove_red_eye) : null,
-          // border: InputBorder.none
         ),
       ),
     );

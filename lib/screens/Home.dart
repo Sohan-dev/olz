@@ -34,7 +34,7 @@ class _HomeState extends State<Home> {
         actions: [
           IconButton(
             icon: const Icon(
-              Icons.settings,
+              Icons.power_off,
               color: Colors.white,
             ),
             onPressed: () {

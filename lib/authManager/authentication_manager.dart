@@ -11,6 +11,7 @@ class AuthecticationManager extends GetxController with CacheManager {
   }
 
   void login(String token) async {
+    print(token);
     isLoggedIn.value = true;
     await saveToken(token);
   }
