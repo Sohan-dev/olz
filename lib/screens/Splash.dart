@@ -2,7 +2,6 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:olz/authManager/auth_verify.dart';
 import 'package:olz/authManager/authentication_manager.dart';
 import 'package:olz/screens/Home.dart';
 import 'package:olz/screens/Login.dart';

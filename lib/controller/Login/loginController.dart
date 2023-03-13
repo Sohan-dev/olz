@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:olz/apiModule/apiService.dart';
 import 'package:olz/authManager/authentication_manager.dart';
 import 'package:olz/models/user/user_detail_model.dart';
 import 'package:olz/screens/Home.dart';
@@ -38,80 +37,8 @@ class LoginController extends GetxController {
     passwordController.dispose();
   }
 
-  // validateEmail(String value) {
-  //   if (value == '') {
-  // return 'Please enter a valid UID';
-  // return Get.snackbar('Error', 'Please enter a valid ID',
-  //     snackPosition: SnackPosition.BOTTOM,
-  //     titleText: Text(
-  //       'UID',
-  //       textScaleFactor: 1.2,
-  //       style: TextStyle(
-  //           fontFamily: GoogleFonts.lato().fontFamily,
-  //           fontWeight: FontWeight.bold,
-  //           color: Colors.white),
-  //     ),
-  //     messageText: Text(
-  //       'Please enter a valid UID',
-  //       style: TextStyle(
-  //           fontFamily: GoogleFonts.lato().fontFamily,
-  //           fontWeight: FontWeight.bold,
-  //           color: Colors.white),
-  //     ),
-  //     backgroundColor: Colors.deepPurple);
-  //   }
-  // }
-
-  // validatePassword(String value) {
-  //   if (value == '') {
-  // return 'Please enter password';
-  // return Get.snackbar('Error', 'Please enter a valid ID',
-  //     snackPosition: SnackPosition.BOTTOM,
-  //     titleText: Text(
-  //       'Password',
-  //       textScaleFactor: 1.2,
-  //       style: TextStyle(
-  //           fontFamily: GoogleFonts.lato().fontFamily,
-  //           fontWeight: FontWeight.bold,
-  //           color: Colors.white),
-  //     ),
-  //     messageText: Text(
-  //       'Please enter password',
-  //       style: TextStyle(
-  //           fontFamily: GoogleFonts.lato().fontFamily,
-  //           fontWeight: FontWeight.bold,
-  //           color: Colors.white),
-  //     ),
-  //     backgroundColor: Colors.deepPurple);
-
-  // } else if (value.length < 8) {
-  // return Get.snackbar('Error', 'Please enter a valid ID',
-  //     snackPosition: SnackPosition.BOTTOM,
-  //     titleText: Text(
-  //       'Password',
-  //       textScaleFactor: 1.2,
-  //       style: TextStyle(
-  //           fontFamily: GoogleFonts.lato().fontFamily,
-  //           fontWeight: FontWeight.bold,
-  //           color: Colors.white),
-  //     ),
-  //     messageText: Text(
-  //       'Password must not be less than 8 character',
-  //       style: TextStyle(
-  //           fontFamily: GoogleFonts.lato().fontFamily,
-  //           fontWeight: FontWeight.bold,
-  //           color: Colors.white),
-  //     ),
-  //     backgroundColor: Colors.deepPurple);
-  //     return 'Password must not be less than 8 character';
-  //   }
-  // }
-
   void checkLogin() {
     final isValid = formState.currentState!.validate();
-
-    print(isValid);
-
     if (isValid) {
       login();
     }
@@ -129,33 +56,29 @@ class LoginController extends GetxController {
         'password': passwordController.text,
       };
 
-      ApiService.getLogin(ApiEndpoints.authEndpoints.loginUrl, body, headers);
+      http.Response response =
+          await http.post(url, body: jsonEncode(body), headers: headers);
 
-      // http.Response response =
-      //     await http.post(url, body: jsonEncode(body), headers: headers);
+      if (response.statusCode == 200) {
+        isLoading.value = false;
+        Map<String, dynamic> responseData = jsonDecode(response.body);
 
-      // print(url);
+        if (responseData['status'] == true) {
+          UserDetails.userName = responseData['data']['name'];
+        }
+        var token = responseData['token'];
 
-      // if (response.statusCode == 200) {
-      //   isLoading.value = false;
-      //   Map<String, dynamic> responseData = jsonDecode(response.body);
+        _authecticationManager.login(token);
 
-      //   if (responseData['status'] == true) {
-      //     UserDetails.userName = responseData['data']['name'];
-      //   }
-      //   var token = responseData['token'];
-
-      //   _authecticationManager.login(token);
-
-      //   final SharedPreferences prefs = await _prefs;
-      //   await prefs.setString('token', token);
-      //   Get.off(() => const Home());
-      //   emailController.clear();
-      //   passwordController.clear();
-      // } else {
-      //   isLoading.value = false;
-      //   Get.snackbar('Error', 'Something is wrong please try again');
-      // }
+        final SharedPreferences prefs = await _prefs;
+        await prefs.setString('token', token);
+        Get.off(() => const Home());
+        emailController.clear();
+        passwordController.clear();
+      } else {
+        isLoading.value = false;
+        Get.snackbar('Error', 'Something is wrong please try again');
+      }
     } catch (e) {
       if (kDebugMode) {
         print(e);
